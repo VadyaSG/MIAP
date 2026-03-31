@@ -5,6 +5,19 @@
 #include <iostream>
 
 template <typename T,typename T2>
+void par_for_each(T begin, T end, T2 func);
+
+void print(int val);
+
+int main()
+{
+	std::vector<int> vec(10000);
+	std::iota(vec.begin(), vec.end(), 0);
+	par_for_each(vec.begin(), vec.end(), print);
+	return 0;
+}
+
+template <typename T, typename T2>
 void par_for_each(T begin, T end, T2 func)
 {
 	auto size = std::distance(begin, end);
@@ -24,15 +37,9 @@ void par_for_each(T begin, T end, T2 func)
 	par_for_each(mid, end, func);
 	future.get();
 }
+
 void print(int val)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	std::cout << val<<" ";
-}
-int main()
-{
-	std::vector<int> vec(10000);
-	std::iota(vec.begin(), vec.end(), 0);
-	par_for_each(vec.begin(), vec.end(), print);
-	return 0;
+	std::cout << val << " ";
 }
